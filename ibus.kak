@@ -1,10 +1,10 @@
 declare-option -docstring ' engine name when ibus is on
 You can get the engine name by following steps
-1. put command line \'ibus engine\'
+1. put \'ibus engine\' on shell command line 
 2. turn ibus on (press hot key)
 3. press enter' str ibus_on '' 
 declare-option  -docstring ' engine name when ibus is off
-#You can get the engine name by running \'ibus engine\'' str ibus_off 'xkb:us::eng'
+You can get the engine name by running \'ibus engine\'' str ibus_off 'xkb:us::eng'
 
 declare-option  -hidden bool ibus_was_on false
 
