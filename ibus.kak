@@ -23,10 +23,10 @@ define-command -hidden ibus-turn-off-with-state %{ %sh{
 	state=`ibus engine`
 	if [ $state = $kak_opt_ibus_on ] ; then
 		echo 'set-option global ibus_was_on true'
+		echo 'ibus-turn-off'
 	else
 		echo 'set-option global ibus_was_on false'
 	fi
-	echo 'ibus-turn-off'
 }}
 
 define-command -hidden ibus-restore-state %{ %sh{
