@@ -48,12 +48,12 @@ setup-ibus-auto-switch %{
 	remove-hooks global ibus
 	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off-with-state }
 	hook -group ibus global ModeChange normal:insert %{ ibus-restore-state }
-	#hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
+	hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
 }
 
 define-command -docstring 'turn off ibus when you go back normal mode.' \
 setup-ibus-auto-off %{
 	remove-hooks global ibus
 	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off }
-	#hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
+	hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
 }
