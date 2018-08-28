@@ -1,25 +1,25 @@
-declare-option -docstring 'engine name when ibus is on
+declare-option -docstring "engine name when ibus is on
 You can get the engine name by following steps
-1. put \'ibus engine\' on shell command line 
+1. put 'ibus engine' on shell command line
 2. turn ibus on (press hot key)
-3. press enter' \
+3. press enter" \
 str ibus_on ''
 
-declare-option -docstring 'engine name when ibus is off
-You can get the engine name by running \'ibus engine\'' \
+declare-option -docstring "engine name when ibus is off
+You can get the engine name by running 'ibus engine'" \
 str ibus_off 'xkb:us::eng'
 
 declare-option -hidden bool ibus_was_on false
 
-define-command ibus-turn-on %{ %sh{
+define-command ibus-turn-on %{ nop %sh{
 	ibus engine $kak_opt_ibus_on
 }}
 
-define-command ibus-turn-off %{ %sh{
+define-command ibus-turn-off %{ nop %sh{
 	ibus engine $kak_opt_ibus_off
 }}
 
-define-command -hidden ibus-turn-off-with-state %{ %sh{
+define-command -hidden ibus-turn-off-with-state %{ evaluate-commands %sh{
 	state=`ibus engine`
 	if [ $state = $kak_opt_ibus_on ] ; then
 		echo 'set-option global ibus_was_on true'
@@ -29,17 +29,21 @@ define-command -hidden ibus-turn-off-with-state %{ %sh{
 	fi
 }}
 
-define-command -hidden ibus-restore-state %{ %sh{
-	[ $kak_opt_ibus_was_on = true ] && echo 'ibus-turn-on'
+define-command -hidden ibus-restore-state %{ evaluate-commands %sh{
+	if [ $kak_opt_ibus_was_on = true ] ; then
+		echo 'ibus-turn-on'
+	else
+		echo nop
+	fi
 }}
 
 #prompt hook slow down many command.
 #As in doc command, the slowing down is significant.
 #after resolve issue #1747, uncomment the hook.
-define-command -docstring 'Turn off ibus when you go back normal mode.
+define-command -docstring "Turn off ibus when you go back normal mode.
 Turn on ibus when you enter insert mode,
 if it was on when you left insert mode last time.
-To use this feature correctly, you should set option \'ibus_on\'' \
+To use this feature correctly, you should set option 'ibus_on'" \
 setup-ibus-auto-switch %{
 	remove-hooks global ibus
 	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off-with-state }
