@@ -22,10 +22,10 @@ define-command ibus-turn-off %{ nop %sh{
 define-command -hidden ibus-turn-off-with-state %{ evaluate-commands %sh{
 	state=`ibus engine`
 	if [ $state = $kak_opt_ibus_on ] ; then
-		echo 'set-option global ibus_was_on true'
+		echo 'set-option buffer ibus_was_on true'
 		echo 'ibus-turn-off'
 	else
-		echo 'set-option global ibus_was_on false'
+		echo 'set-option buffer ibus_was_on false'
 	fi
 }}
 
@@ -37,9 +37,6 @@ define-command -hidden ibus-restore-state %{ evaluate-commands %sh{
 	fi
 }}
 
-#prompt hook slow down many command.
-#As in doc command, the slowing down is significant.
-#after resolve issue #1747, uncomment the hook.
 define-command -docstring "Turn off ibus when you go back normal mode.
 Turn on ibus when you enter insert mode,
 if it was on when you left insert mode last time.
@@ -57,3 +54,5 @@ setup-ibus-auto-off %{
 	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off }
 	hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
 }
+
+hook global WinDisplay .* %{ set-option buffer ibus_was_on false }
