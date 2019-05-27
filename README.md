@@ -17,7 +17,7 @@ To use `setup-ibus-auto-switch`, you should set option `ibus_on`.
 
 `ibus_on` is the engine name when ibus is on.
 
-You can get the engine name following steps.
+You can get the engine name by following steps.
 
 1. put `ibus engine` on shell command line
 2. turn on ibus by pressing hot key
@@ -26,3 +26,9 @@ You can get the engine name following steps.
 If your keyboard layout is not 'us', you also have to set option `ibus_off`.
 
 You can get the layout name by running `ibus engine`.
+
+## Callback
+You can call kakoune command when ibus is turned on or off.
+To do so, please set `ibus_callback_on`, `ibus_callback_off` or both.
+
+This is useful if you want to send some signal to the keyboard.

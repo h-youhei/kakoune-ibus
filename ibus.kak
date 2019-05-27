@@ -11,12 +11,30 @@ str ibus_off 'xkb:us::eng'
 
 declare-option -hidden bool ibus_was_on false
 
-define-command ibus-turn-on %{ nop %sh{
+declare-option -docstring "command name that is called
+when ibus is turned on" \
+str ibus_callback_on ''
+
+declare-option -docstring "command name that is called
+when ibus is turned off" \
+str ibus_callback_off ''
+
+define-command ibus-turn-on %{ evaluate-commands %sh{
 	ibus engine $kak_opt_ibus_on
+	if [ -n "$kak_opt_ibus_callback_on" ]; then
+		echo $kak_opt_ibus_callback_on
+	else
+		echo nop
+	fi
 }}
 
-define-command ibus-turn-off %{ nop %sh{
+define-command ibus-turn-off %{ evaluate-commands %sh{
 	ibus engine $kak_opt_ibus_off
+	if [ -n "$kak_opt_ibus_callback_off" ]; then
+		echo $kak_opt_ibus_callback_off
+	else
+		echo nop
+	fi
 }}
 
 define-command -hidden ibus-turn-off-with-state %{ evaluate-commands %sh{
