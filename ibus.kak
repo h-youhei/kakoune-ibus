@@ -61,16 +61,16 @@ if it was on when you left insert mode last time.
 To use this feature correctly, you should set option 'ibus_on'" \
 setup-ibus-auto-switch %{
 	remove-hooks global ibus
-	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off-with-state }
-	hook -group ibus global ModeChange normal:insert %{ ibus-restore-state }
-	hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
+	hook -group ibus global ModeChange pop:insert:normal %{ ibus-turn-off-with-state }
+	hook -group ibus global ModeChange push:normal:insert %{ ibus-restore-state }
+	hook -group ibus global ModeChange pop:prompt:normal %{ ibus-turn-off }
+	hook -group ibus global WinDisplay .* %{ set-option buffer ibus_was_on false }
 }
 
 define-command -docstring 'turn off ibus when you go back normal mode.' \
 setup-ibus-auto-off %{
 	remove-hooks global ibus
-	hook -group ibus global ModeChange insert:normal %{ ibus-turn-off }
-	hook -group ibus global ModeChange prompt:normal %{ ibus-turn-off }
+	hook -group ibus global ModeChange pop:insert:normal %{ ibus-turn-off }
+	hook -group ibus global ModeChange pop:prompt:normal %{ ibus-turn-off }
+	hook -group ibus global WinDisplay .* %{ set-option buffer ibus_was_on false }
 }
-
-hook global WinDisplay .* %{ set-option buffer ibus_was_on false }
